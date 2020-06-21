@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from resources.user import Userlogin,User_reg
+from resources.user import Userlogin,User_reg,Register
 
 app=Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS']=True
@@ -24,5 +24,7 @@ def invalid_token_callback(error):
     }), 401
 api.add_resource(Userlogin,'/Userlogin')
 api.add_resource(User_reg,'/User_reg')
+api.add_resource(Register,'/registration')
+
 if __name__ == "__main__":
     app.run(debug=True)
