@@ -51,40 +51,90 @@ class User_reg(Resource):#user registration
         except:
             return {"message":"There was an error inserting into users table."},500
         return {"message":"Successfully Inserted."},201
-class Register(Resource):
+class Sport_Registration(Resource):
+    @jwt_required
     def post(self):
         parser=reqparse.RequestParser()
-        parser.add_argument('sport name',type=str,required=True,help="sport name  cannot be left blank!")
+        parser.add_argument('sport_name',type=str,required=True,help="sport_name  cannot be left blank!")
 
-        parser.add_argument('team_member_id',type=int,required=True,help="Team member id cannot be left blank!")
+        parser.add_argument('member_ID',type=int,required=True,help="Team member id cannot be left blank!")
         parser.add_argument('team_id',type=int,required=True,help="Team id cannot be left blank!")
-        parser.add_argument('name',type=str,required=True,help="Name cannot be left blank!")
-        parser.add_argument('branch',type=str,required=True,help="Branch cannot be left blank!")
-        parser.add_argument('section',type=int,required=True,help="Year cannot be left blank!")
-        parser.add_argument('sport_id',type=int,required=True,help="Sport_id cannot be left blank!")
+        parser.add_argument('team_name',type=str,required=True,help="Name cannot be left blank!")
+        parser.add_argument('member_name',type=str,required=True,help="Branch cannot be left blank!")
+        parser.add_argument('year_and_section',type=str,required=True,help="Year cannot be left blank!")
+        parser.add_argument('branch',type=str,required=True,help="Sport_id cannot be left blank!")
         data=parser.parse_args()
         
-        sport={"badminton": query(f""" insert into group10.badminton (team_member_id, team_id, name, branch, sport_id, section) values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['sport_id']},{data['section']});""")  ,
-            "basketball": query(f""" insert into group10.basketball values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "cricket": query(f""" insert into group10.cricket values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "football": query(f""" insert into group10.football values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "kabaddi": query(f""" insert into group10.kabaddi values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "table_tennis": query(f""" insert into group10.table_tennis values ({data['team_member_id']},{data['team_id']},'{data['name']}','{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "volley_ball": query(f""" insert into group10.volley_ball values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "chess": query(f""" insert into group10.chess values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") ,
-            "carroms": query(f""" insert into group10.carroms values ({data['team_member_id']},{data['team_id']},'{data['name']}',
-            '{data['branch']}',{data['section']},{data['sport_id']});""") 
+        #try:
+        query(f""" insert into teamdetails (member_ID, sport_name, team_id, team_name, member_name, year_and_section, branch) values
+             ({data['member_ID']},'{data['sport_name']}',{data['team_id']},'{data['team_name']}','{data['member_name']}','{data['year_and_section']}','{data['branch']}');""") 
+        #except:
+            #return {"message":"There was an error inserting in the table."},500
 
-            }
-        return sport[f"""{data['sport name']}"""]
+
+       # return {"message":"Successfully Inserted."},201
         
+        # sport[f"""{data['sport name']}"""]
+        
+class Team_status(Resource):
+    @jwt_required
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('team_id',type=int,required=True,help="Team id cannot be left blank!")
+        parser.add_argument('sport_name',type=str,required=True,help="sport name  cannot be left blank!")
+
+        data=parser.parse_args()
+
+        try:
+            return query(f"""SELECT status FROM teamdetails WHERE team_id={data['team_id']} and sport_name='{data['sport_name']}'""")
+        except:
+            return {"message":"There was an error retrieving the data from database."},500
+class Sportdetails(Resource):
+    @jwt_required
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('sport_name',type=str,required=True,help="Sport name cannot be left blank!")
+        data=parser.parse_args()
+        try:
+            return query(f"""SELECT * FROM group10.sports WHERE sport_name='{data['sport_name']}'; """)
+        except:
+            return {"message":"There has been an error retrieving sports details"},500
+        return {"message":"Sports details retrieved succesfully."}
+class Reporting_time(Resource):
+    @jwt_required
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('team_id',type=int,required=True,help="Team id cannot be left blank!")
+        parser.add_argument('sport_name',type=str,required=True,help="sport name cannot be left blank!")
+        data=parser.parse_args()
+        try:
+            return query(f"""SELECT reporting_time,start_time FROM group10.schedule1 WHERE team1_id={data['team_id']} OR team2_id={data['team_id']} AND sport_name='{data['sport_name']}'; """)
+        except:
+            return {"message":"There has been an error retrieving sports details"},500
+        return {"message":"Sports details retrieved succesfully."}
+class Sport_category(Resource):
+    @jwt_required
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('sport_category',type=str,required=True,help="Sport Category cannot be left blank!")
+        data=parser.parse_args()
+        try:
+            return query(f"""SELECT * FROM group10.sports WHERE sport_category='{data['sport_category']}'; """)
+        except:
+            return {"message":"There has been an error retrieving sports details"},500
+        return {"message":"Sports details retrieved succesfully."}
+class Schedules(Resource):
+    @jwt_required
+    def get(self):
+        parser=reqparse.RequestParser()
+        parser.add_argument('team_id',type=int,required=True,help="Team id cannot be left blank!")
+        data=parser.parse_args()
+        try:
+            return query(f"""SELECT * FROM group10.schedule1 WHERE team1_id={data['team_id']} OR team2_id={data['team_id']}; """)
+        except:
+            return {"message":"There has been an error retrieving dates and schedules."},500
+        return {"message":"Dates and schedules retrieved succesfully."}
+
 
         
         
