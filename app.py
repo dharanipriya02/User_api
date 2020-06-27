@@ -1,8 +1,7 @@
 from flask import Flask,jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from resources.user import Userlogin,User_reg,Sport_Registration,Team_status,Sportdetails,Reporting_time,Sport_category,Schedules
-
+from resources.user import Userlogin,User_reg,Sport_Registration,Team_status,Sportdetails,Reporting_time,Sport_category,Schedules,User_info,Registered_sports,Change_password
 app=Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS']=True
 app.config['JWT_SECRET_KEY']='group10'
@@ -30,6 +29,11 @@ api.add_resource(Sportdetails,'/sportdetails')
 api.add_resource(Reporting_time,'/reporting_time')
 api.add_resource(Sport_category,'/sportcategory')
 api.add_resource(Schedules,'/schedule')
+api.add_resource(User_info,'/user_info')
+api.add_resource(Registered_sports,'/team_member_details')
+api.add_resource(Change_password,'/change_password')
+
+
 
 
 if __name__ == "__main__":
