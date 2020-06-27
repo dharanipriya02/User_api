@@ -5,7 +5,7 @@ from db import query
 
 class Userlogin(Resource):
     parser=reqparse.RequestParser()
-    parser.add_argument('user_id',type=str,required=True,help="user id cannot be left blank!")
+    parser.add_argument('user_id',type=int,required=True,help="user id cannot be left blank!")
     parser.add_argument('password_',type=str,required=True,help="Password cannot be left blank!")
     
     def post(self):
