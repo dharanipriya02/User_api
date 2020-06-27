@@ -161,11 +161,11 @@ class Registered_sports(Resource):
     def get(self):
         parser=reqparse.RequestParser()
         parser.add_argument('team_id',type=int,required=True,help="team id cannot be left blank!")
-        parser.add_argument('sport_name',type=str,required=True,help="sport name cannot be left blank!")
+      #  parser.add_argument('sport_name',type=str,required=True,help="sport name cannot be left blank!")
 
         data=parser.parse_args()
         try:
-            return query(f"""SELECT * FROM group10.teamdetails WHERE team_id={data['team_id']} and sport_name='{data['sport_name']}'; """)
+            return query(f"""SELECT * FROM group10.teamdetails WHERE team_id={data['team_id']} ; """)
         except:
             return {"message":"There has been an error retrieving team details."},500
       #  return {"message":"Dates and schedules retrieved succesfully."}
