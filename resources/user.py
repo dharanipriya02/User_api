@@ -75,10 +75,10 @@ class Sport_Registration(Resource):
 
         parser.add_argument('member_ID',type=int,required=True,help="Team member id cannot be left blank!")
         parser.add_argument('team_id',type=int,required=True,help="Team id cannot be left blank!")
-        #parser.add_argument('team_name',type=str,required=True,help="Name cannot be left blank!")
-        parser.add_argument('member_name',type=str,required=True,help="Branch cannot be left blank!")
+        parser.add_argument('team_name',type=str,required=True,help="team name cannot be left blank!")
+        parser.add_argument('member_name',type=str,required=True,help="Player name cannot be left blank!")
         parser.add_argument('section',type=str,required=True,help="section cannot be left blank!")
-        parser.add_argument('branch',type=str,required=True,help="Sport_id cannot be left blank!")
+        parser.add_argument('branch',type=str,required=True,help="branch cannot be left blank!")
         parser.add_argument('gender',type=str,required=True,help=" gender cannot be left blank!")
         #parser.add_argument('notifications',type=int,required=True,help="Sport_id cannot be left blank!")
 
@@ -86,8 +86,8 @@ class Sport_Registration(Resource):
         data=parser.parse_args()
         
         #try:
-        query(f""" insert into teamdetails (member_ID, sport_name, team_id,member_name, section, branch,gender) values
-             ({data['member_ID']},'{data['sport_name']}',{data['team_id']},'{data['member_name']}','{data['section']}','{data['branch']}','{data['gender']}');""") 
+        query(f""" insert into teamdetails (member_ID, sport_name, team_id,team_name,member_name, section, branch,gender) values
+             ({data['member_ID']},'{data['sport_name']}',{data['team_id']},'{data['team_name']}','{data['member_name']}','{data['section']}','{data['branch']}','{data['gender']}');""") 
         #except:
             #return {"message":"There was an error inserting in the table."},500
 
